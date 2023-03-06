@@ -1,5 +1,5 @@
 {
-  "name": "rollup-plugin-copy-cep-manifest",
+  "name": "rollup-plugin-bundle-cep-manifest",
   "version": "1.0.0",
   "type": "module",
   "description": "Bundles /CSXS/manifest.xml to dist",
@@ -8,8 +8,8 @@
   ],
   "exports": {
     ".": {
-      "import": "./dist/rollup-plugin-copy-cep-manifest.es.js",
-      "require": "./dist/rollup-plugin-copy-cep-manifest.umd.cjs"
+      "import": "./dist/rollup-plugin-bundle-cep-manifest.es.js",
+      "require": "./dist/rollup-plugin-bundle-cep-manifest.umd.cjs"
     }
   },
   "scripts": {

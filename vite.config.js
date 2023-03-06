@@ -5,7 +5,7 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import path from "path-browserify";
 
 
-let libName = 'rollup-plugin-copy-cep-manifest';
+let libName = 'rollup-plugin-bundle-cep-manifest';
 export default defineConfig({
     build: {
         lib: {
