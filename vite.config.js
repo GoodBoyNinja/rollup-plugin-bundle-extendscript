@@ -5,7 +5,7 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import path from "path-browserify";
 
 
-let libName = 'rollup-plugin-bundle-cep-manifest';
+let libName = 'rollup-plugin-bundle-extendscript';
 export default defineConfig({
     build: {
         lib: {
@@ -19,7 +19,7 @@ export default defineConfig({
             plugins: [
                 nodePolyfills(),
             ],
-            external: ['fs', 'path', 'fs-extra'],
+            external: ['fs', 'path', 'fs-extra', 'crypto'],
         }
     },
     resolve: {

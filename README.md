@@ -1,27 +1,21 @@
-# rollup-plugin-bundle-cep-manifest
-### A Rollup plugin to bundle the CSXS folder, including the manifest.xml file, to the dist folder.
+# rollup-plugin-bundle-extendscript
+An **experimental** Rollup plugin to automatically bundle `.jsx` extendscript files that are referenced on the js side of your cep plugin. 
 
-It also updates the paths in the `manifest.xml` file to match the new location of the files in the `dist` folder. For example:
-    
-
-
-
-*Tip: Better used with Vite :)*
 
 # Installation
 ```js
-npm install rollup-plugin-bundle-cep-manifest
+npm install rollup-plugin-bundle-extendscript --dev
 ```
 
 # Usage
 
 With Rollup (rollup.config.js):
 ```js
-import { bundleManifest } from 'rollup-plugin-bundle-cep-manifest';
+import { bundleExtendScript } from 'rollup-plugin-bundle-extendscript';
 
 export default {
     plugins: [
-        bundleManifest(),
+        bundleExtendScript(),
     ],
 };
 ```
@@ -29,13 +23,13 @@ export default {
 With Vite (vite.config.js):
 ```js
 import { defineConfig } from 'vite';
-import { bundleManifest } from 'rollup-plugin-bundle-cep-manifest';
+import  bundleExtendScript  from 'rollup-plugin-bundle-extendscript';
 
 export default defineConfig({
     build: {
         rollupOptions: {
             plugins: [
-                bundleManifest(),
+                bundleExtendScript(),
             ],
         },
     }
@@ -44,49 +38,28 @@ export default defineConfig({
 
 <br><br>
 
-## Automatic
-The plugin updates the paths in the `manifest.xml` file to match the new location of the files in the `dist` folder. For example:
-
-
-```xml
-<MainPath> ./index-dev.html </MainPath>
-```
-becomes
-
-```xml
-<MainPath> ./index.html </MainPath>
-```
-
-When used with `Vite` the plugin does a better job at updating the paths, since it knows the final location of the files (Vite bundles html files by default).
-
-When used with Rollup, the plugin will try its best and guess the final location of the files, but it might fail. In that case, you can manually remap the paths (see below).
-
-
-## Manual
-
-To manually convert the paths in your `manifest.xml` file, you can use the `remap` option:
-
+## How do it work
+Write your code like this:
 ```js
-bundleManifest({
-    {
-    remap: {
-        "./index-dev.html": "./index.html",
-    }
-}),
+import path from 'path';
+
+let jsxfile = path.join(
+    new CSInterface().getSystemPath(SystemPath.EXTENSION),
+    new URL(import.meta.url).pathname,
+    './jsx/file.jsx'
+);
+
+cs.evalScript(`$.evalFile("${jsxfile}")`); 
 ```
 
-Note that the final paths (those on the right) should be relative to the `dist` folder.
-
-You can specify more than one path to remap:
+When you bundle your code with rollup, the plugin will find the relative path in your code:
 ```js
-bundleManifest({
-    {
-    remap: {
-        "./index-dev.html": "./index.html",
-        "./other-index-dev": "./other-index.js",
-    }
-}),
+"./jsx/file.jsx"
 ```
+If it finds the file, it will pack it with your bundle to `dist/extendscript/file.jsx` and 
 
 
-Enjoy :)
+# Warning
+When using Vite, meta url bundles files by default which does not play nicely with this plugin. For example:
+```js
+new URL('./jsx/file.jsx' ,import.meta.url).pathname;

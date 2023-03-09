@@ -1,15 +1,16 @@
 {
-  "name": "rollup-plugin-bundle-cep-manifest",
+  "name": "rollup-plugin-bundle-extendscript",
   "version": "1.0.0",
   "type": "module",
-  "description": "Bundles /CSXS/manifest.xml to dist",
+  "types": "./types/index.d.ts",
+  "description": "Automatically / Manually pack JSX ExtendScript files that are mentioned in your CEP Extension as relative / absolute paths",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/rollup-plugin-bundle-cep-manifest.es.js",
-      "require": "./dist/rollup-plugin-bundle-cep-manifest.umd.cjs"
+      "import": "./dist/rollup-plugin-bundle-extendscript.es.js",
+      "require": "./dist/rollup-plugin-bundle-extendscript.umd.cjs"
     }
   },
   "scripts": {
@@ -18,13 +19,12 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^4.1.0"
+    "path-browserify": "^1.0.1",
+    "vite": "^4.1.0",
+    "vite-plugin-node-polyfills": "^0.7.0"
   },
   "dependencies": {
-    "colors": "^1.4.0",
-    "fs-extra": "^11.1.0",
-    "path-browserify": "^1.0.1",
     "recursive-readdir": "^2.2.3",
-    "vite-plugin-node-polyfills": "^0.7.0"
+    "uuid": "^9.0.0"
   }
 }
