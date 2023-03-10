@@ -24,7 +24,10 @@
     "vite-plugin-node-polyfills": "^0.7.0"
   },
   "dependencies": {
+    "code-stringify": "^2.0.3",
+    "jsesc": "^3.0.2",
     "recursive-readdir": "^2.2.3",
+    "rollup-pluginutils": "^2.8.2",
     "uuid": "^9.0.0"
   }
 }
