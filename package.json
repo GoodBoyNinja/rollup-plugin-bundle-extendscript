@@ -1,16 +1,16 @@
 {
-  "name": "rollup-plugin-bundle-extendscript",
+  "name": "rollup-plugin-import-extendscript",
   "version": "1.0.0",
   "type": "module",
   "types": "./types/index.d.ts",
-  "description": "Automatically / Manually pack JSX ExtendScript files that are mentioned in your CEP Extension as relative / absolute paths",
+  "description": "import .jsx extendscript files as a string for later evaluation using evalScript()",
   "files": [
     "dist"
   ],
   "exports": {
     ".": {
-      "import": "./dist/rollup-plugin-bundle-extendscript.es.js",
-      "require": "./dist/rollup-plugin-bundle-extendscript.umd.cjs"
+      "import": "./dist/rollup-plugin-import-extendscript.es.js",
+      "require": "./dist/rollup-plugin-import-extendscript.umd.cjs"
     }
   },
   "scripts": {
@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "code-stringify": "^2.0.3",
+    "colors": "^1.4.0",
     "jsesc": "^3.0.2",
     "recursive-readdir": "^2.2.3",
     "rollup-pluginutils": "^2.8.2",

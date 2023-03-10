@@ -1,39 +1,77 @@
-# rollup-plugin-bundle-extendscript
-An **experimental** Rollup plugin to automatically bundle `.jsx` extendscript files that are referenced on the js side of your cep plugin. 
+# rollup-plugin-import-extendscript
+An experimental ___Vite / Rollup___ plugin to import ExtendScript files as a string
 
 
 # Installation
-```js
-npm install rollup-plugin-bundle-extendscript --dev
+```
+npm install rollup-plugin-import-extendscript --dev
 ```
 
-# Usage
-
-
-
-With Vite (vite.config.js):
+# Setup
+When used with Vite, call the plugin in Vite's config instead of rollup's config to enjoy it during both development & bundling
 ```js
 import { defineConfig } from 'vite';
-import  bundleExtendScript  from 'rollup-plugin-bundle-extendscript';
+import  importExtendScript  from 'rollup-plugin-import-extendscript';
 
 export default defineConfig({
-    build: {
-        rollupOptions: {
-            plugins: [
-                bundleExtendScript(),
-            ],
-        },
-    }
+    plugins: [
+        importExtendScript()
+    ]
 });
 ```
 
-In your cep plugin, write your absolute path to the `.jsx` file in the following fashion:
+
+Rollup 
 ```js
-    let cs = new CSInterface();
-    
-    let filepath = new URL('./jsx/file.jsx' ,import.meta.url).pathname;
-    cs.evalScript(`$.evalFile("${filepath}")`);
+import importExtendScript from 'rollup-plugin-import-extendscript';
+
+export default {
+  plugins: [
+    importExtendScript()
+  ]
+};
+
 ```
 
-Vite automatically bundles the jsx file. Then, the plugin will process the jsx file to resolve any `#include`, `$.evalFile()`s or `@@include` in the jsx file.
+# Usage
+In your code, import the file as a string, then evaluate it
+```js
+import jsxContent from './jsx/file.jsx';
+new CSInterface().evalScript(jsxContent);
+```
+The plugin will make sure that the file is loaded as a string, and that the string is properly escaped for ExtendScript.
+
+# Options
+## explicit
+`.jsx` is not an extendscript exclusive file extension. To avoid clashes, you can set `explicit` to `true` and add a `?extendscript` suffix to your import statements. For example:
+
+In your config file:
+```js
+importExtendScript({
+    explicit: true
+})
+```
+
+In your code:
+```js
+import jsxContent from './jsx/file.jsx?extendscript';
+```
+Files without the `?extendscript` suffix will be ignored by the plugin.
+
+
+# Include
+Your `.jsx` files may reference other `.jsx` files using:
+```js
+// file.jsx
+#include './other.jsx'
+```
+The plugin automatically resolves these references, and includes them in the final string.
+
+<br><br> 
+
+🎉<br>
+Good Boy Ninja
+
+
+
 

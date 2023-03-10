@@ -1,17 +1,16 @@
-declare module 'rollup-plugin-bundle-extendscript' {
-
-    interface Options {
-        output: string;
-        inputs: string[];
-    }
-
-    const pack: (pluginOptions?: Partial<Options>) => {
-        name: string;
-        transform: (code: string, id: string) => Promise<{
-            code: string | null | undefined;
-            map: any;
-        } | null | undefined>;
-    };
-
-    export default pack;
+/**
+ * Options for the importJSXAsString plugin.
+ */
+interface ImportJSXOptions {
+    /**
+     * When `true`, only files imported with a suffix of "?extendscript" will be imported. For example: ` import myFile from './myFile.jsx?extendscript' `
+     */
+    explicit?: boolean;
 }
+
+/**
+ * A Rollup plugin that imports `.jsx` files as strings.
+ */
+declare function importJSXAsString(options?: ImportJSXOptions): RollupPlugin;
+
+export default importJSXAsString;

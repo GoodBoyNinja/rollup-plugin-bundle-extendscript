@@ -5,7 +5,7 @@ import { nodePolyfills } from 'vite-plugin-node-polyfills';
 import path from "path-browserify";
 
 
-let libName = 'rollup-plugin-bundle-extendscript';
+let libName = 'rollup-plugin-import-extendscript';
 export default defineConfig({
     build: {
         lib: {
