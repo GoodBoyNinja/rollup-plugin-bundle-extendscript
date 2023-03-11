@@ -1,9 +1,19 @@
 {
   "name": "rollup-plugin-import-extendscript",
+  "author": "Good Boy Ninja",
   "version": "1.0.2",
   "type": "module",
   "types": "./types/index.d.ts",
   "description": "import .jsx extendscript files as a string for later evaluation using evalScript()",
+  "keywords": [
+    "adobe",
+    "extendscript",
+    "jsx"
+  ],
+  "repository": {
+    "url": "https://github.com/GoodBoyNinja/rollup-plugin-bundle-extendscript",
+    "type": "git"
+  },
   "files": [
     "dist"
   ],
