@@ -60,12 +60,18 @@ Files without the `?extendscript` suffix will be ignored by the plugin.
 
 
 # Include
-Your `.jsx` files may reference other `.jsx` files using:
+There are multiple ways to include a file in ExtendScript.
+This plugin knows how to handle the following two:
+
 ```js
-// file.jsx
 #include './other.jsx'
 ```
-The plugin automatically resolves these references, and includes them in the final string.
+
+Or
+
+```js
+// @include './other.jsx'
+```
 
 <br><br> 
 
