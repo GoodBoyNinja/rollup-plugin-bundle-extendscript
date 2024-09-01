@@ -2,6 +2,7 @@
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory(require("path"), require("fs")) : typeof define === "function" && define.amd ? define(["path", "fs"], factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, global["rollup-plugin-import-extendscript"] = factory(global.path, global.fs));
 })(this, function(path, fs) {
   "use strict";
+  const os = {};
   const fileresolve = (filePath, content = "") => {
     if (content === null) {
       content = fs.readFileSync(filePath, "utf8");
@@ -12,12 +13,23 @@
     for (let line of linesWithIncludes) {
       const includePath = getValueBetweenQuotes(line);
       if (!includePath) continue;
-      const includeAbsolutePath = path.resolve(path.dirname(filePath), includePath);
+      let includeAbsolutePath = path.resolve(path.dirname(filePath), includePath);
+      if (!fs.existsSync(includeAbsolutePath)) {
+        let ext = includePath.split(".").pop();
+        includeAbsolutePath = includeAbsolutePath.replace(new RegExp(`\\.${ext}$`), ".js");
+      }
       if (fs.existsSync(includeAbsolutePath)) {
         let includeContent = fs.readFileSync(includeAbsolutePath, "utf8");
         content = content.replace(line, includeContent);
-        content = fileresolve(includeAbsolutePath, content + ";\n");
+        content = fileresolve(includeAbsolutePath, content);
+        if (content.endsWith(";") === false) {
+          content += ";\n";
+        }
       }
+    }
+    let linesWithReferences = content.match(/\/\/\/\s*<reference.*/g) || [];
+    for (let line of linesWithReferences) {
+      content = content.replace(line, "");
     }
     return content;
   };
@@ -296,6 +308,8 @@
     explicit: false
   };
   let ids = /* @__PURE__ */ new Set();
+  let tempDir = os.tmpdir();
+  path.join(tempDir, "extendscript-vite-plugin");
   function importJSXAsString(options = defaultOptions) {
     options = Object.assign({}, defaultOptions, options);
     return {

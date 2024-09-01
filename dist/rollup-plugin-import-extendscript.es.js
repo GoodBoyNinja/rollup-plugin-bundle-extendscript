@@ -1,5 +1,6 @@
-import { resolve, dirname, basename } from "path";
+import { resolve, dirname, join, basename } from "path";
 import { readFileSync, existsSync } from "fs";
+const os = {};
 const fileresolve = (filePath, content = "") => {
   if (content === null) {
     content = readFileSync(filePath, "utf8");
@@ -10,12 +11,23 @@ const fileresolve = (filePath, content = "") => {
   for (let line of linesWithIncludes) {
     const includePath = getValueBetweenQuotes(line);
     if (!includePath) continue;
-    const includeAbsolutePath = resolve(dirname(filePath), includePath);
+    let includeAbsolutePath = resolve(dirname(filePath), includePath);
+    if (!existsSync(includeAbsolutePath)) {
+      let ext = includePath.split(".").pop();
+      includeAbsolutePath = includeAbsolutePath.replace(new RegExp(`\\.${ext}$`), ".js");
+    }
     if (existsSync(includeAbsolutePath)) {
       let includeContent = readFileSync(includeAbsolutePath, "utf8");
       content = content.replace(line, includeContent);
-      content = fileresolve(includeAbsolutePath, content + ";\n");
+      content = fileresolve(includeAbsolutePath, content);
+      if (content.endsWith(";") === false) {
+        content += ";\n";
+      }
     }
+  }
+  let linesWithReferences = content.match(/\/\/\/\s*<reference.*/g) || [];
+  for (let line of linesWithReferences) {
+    content = content.replace(line, "");
   }
   return content;
 };
@@ -294,6 +306,8 @@ let defaultOptions = {
   explicit: false
 };
 let ids = /* @__PURE__ */ new Set();
+let tempDir = os.tmpdir();
+join(tempDir, "extendscript-vite-plugin");
 function importJSXAsString(options = defaultOptions) {
   options = Object.assign({}, defaultOptions, options);
   return {
