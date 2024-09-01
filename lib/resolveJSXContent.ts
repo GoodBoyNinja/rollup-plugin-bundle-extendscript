@@ -10,17 +10,34 @@ const fileresolve = (filePath: string, content = "") => {
     let includeRegex = new RegExp(`(${includeTypes.join('|')})\\s*['"]?([^'"]*)['"]?\\s*;?`, 'g');
     let linesWithIncludes = content.match(includeRegex) || [];
 
+
     for (let line of linesWithIncludes) {
         const includePath = getValueBetweenQuotes(line);
         if (!includePath) continue;
-        const includeAbsolutePath = resolve(dirname(filePath), includePath);
+        let includeAbsolutePath = resolve(dirname(filePath), includePath);
+
+        if (!existsSync(includeAbsolutePath)) {
+            // this could be a ts compiled file, so try to grab the js equivalent
+            let ext = includePath.split('.').pop();
+            includeAbsolutePath = includeAbsolutePath.replace(new RegExp(`\\.${ext}$`), '.js');
+        }
+
         if (existsSync(includeAbsolutePath)) {
             // console.log(includeAbsolutePath);
             let includeContent = readFileSync(includeAbsolutePath, 'utf8');
             content = content.replace(line, includeContent);
-            content = fileresolve(includeAbsolutePath, content + ';\n'); // add a semicolon to the end of the file to prevent errors
+            content = fileresolve(includeAbsolutePath, content); // add a semicolon to the end of the file to prevent errors
+            if (content.endsWith(';') === false) {
+                content += ';\n';
+            }
         }
 
+    }
+
+    // remove lines that start with  /// <reference 
+    let linesWithReferences = content.match(/\/\/\/\s*<reference.*/g) || [];
+    for (let line of linesWithReferences) {
+        content = content.replace(line, '');
     }
 
     return content;

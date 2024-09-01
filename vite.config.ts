@@ -30,11 +30,8 @@ export default defineConfig(({ command }) => {
 
         },
         plugins: [
-
             dts({ rollupTypes: true }),
-            command === 'serve' && importExtendscript({ explicit: true }),
-
-
+            command === 'serve' && importExtendscript({ explicit: false }),
         ],
 
         resolve: {
