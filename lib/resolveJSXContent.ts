@@ -1,7 +1,7 @@
 import { readFileSync, existsSync } from 'fs';
 import { resolve, dirname } from 'path';
 
-const fileresolve = (filePath, content = null) => {
+const fileresolve = (filePath: string, content = "") => {
     if (content === null) {
         content = readFileSync(filePath, 'utf8');
     }
@@ -26,7 +26,7 @@ const fileresolve = (filePath, content = null) => {
     return content;
 };
 
-function getValueBetweenQuotes(string) {
+function getValueBetweenQuotes(string: string) {
     // gets the string between the first set of quotes, single or double
     const regex = /['"]([^'"]*)['"]/;
     const matches = string.match(regex);

@@ -1,9 +1,9 @@
 {
   "name": "rollup-plugin-import-extendscript",
   "author": "Good Boy Ninja",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "type": "module",
-  "types": "./types/index.d.ts",
+  "types": "./dist/rollup-plugin-import-extendscript.es.d.ts",
   "description": "import .jsx extendscript files as a string for later evaluation using evalScript()",
   "keywords": [
     "adobe",
@@ -29,12 +29,14 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@types/node": "^22.5.1",
     "path-browserify": "^1.0.1",
-    "rollup-plugin-import-extendscript": "^1.0.0",
-    "vite": "^4.1.0",
+    "vite": "^5.3.5",
+    "vite-plugin-dts": "^4.0.3",
     "vite-plugin-node-polyfills": "^0.7.0"
   },
   "dependencies": {
+    "@types/jsesc": "^3.0.3",
     "code-stringify": "^2.0.3",
     "jsesc": "^3.0.2",
     "recursive-readdir": "^2.2.3",

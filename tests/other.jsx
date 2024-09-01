@@ -1,0 +1,1 @@
+var goodbye = 10;

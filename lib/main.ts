@@ -7,21 +7,25 @@ let defaultOptions = {
     explicit: false,
 };
 
-let ids = new Set();
+let ids = new Set<string>();
 export default function importJSXAsString(options = defaultOptions) {
     options = Object.assign({}, defaultOptions, options);
 
     return {
         name: 'rollup-plugin-import-extendscript',
-        load(id) {
+        load(id: string) {
+
+            console.log(id)
 
             let name = basename(id);
             let isJSX = name.includes('.jsx');
             let isJSXBIN = name.includes('.jsxbin');
             let isExtendScript = name.includes('?extendscript');
+            let isKnownFormat = isJSX || isJSXBIN || isExtendScript;
 
-            if (options.explicit && !isExtendScript) return null;
-            else if (!isJSX && !isJSXBIN) return null;
+
+            if (options.explicit && !isKnownFormat) return "export default '';";
+            // else if (!isJSX && !isJSXBIN) return "";
 
             id = isExtendScript ? id.replace('?extendscript', '') : id;
 
@@ -38,9 +42,9 @@ export default function importJSXAsString(options = defaultOptions) {
                 indentLevel: 2, // Use 2 spaces for indentation
                 compact: false, // Don't compact the output
                 minimal: false, // Don't use the shortest possible escape sequences
-                __nonAsciiOnly: true, // Only escape non-ASCII characters
+                // __nonAsciiOnly: true, // Only escape non-ASCII characters
                 // Preserve \t and \n characters
-                wrapAttributes: true,
+                // wrapAttributes: true,
             });
             const wrapped = `export default ${escapedContent};`;
             ids.add(id);
