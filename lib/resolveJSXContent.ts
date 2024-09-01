@@ -34,8 +34,10 @@ const fileresolve = (filePath: string, content = "") => {
 
     }
 
-    // remove lines that start with  /// <reference 
-    let linesWithReferences = content.match(/\/\/\/\s*<reference.*/g) || [];
+    // remove lines of references to files. example:
+    /// <reference path="./jsother.ts " />
+    /// <reference types="./types.ts " />
+    let linesWithReferences = content.match(/\/\/\/\s*<reference\s+.*\s*\/>/g) || [];
     for (let line of linesWithReferences) {
         content = content.replace(line, '');
     }

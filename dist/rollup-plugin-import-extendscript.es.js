@@ -24,7 +24,7 @@ const fileresolve = (filePath, content = "") => {
       }
     }
   }
-  let linesWithReferences = content.match(/\/\/\/\s*<reference.*/g) || [];
+  let linesWithReferences = content.match(/\/\/\/\s*<reference\s+.*\s*\/>/g) || [];
   for (let line of linesWithReferences) {
     content = content.replace(line, "");
   }
@@ -341,12 +341,8 @@ function importJSXAsString(options = defaultOptions) {
         // Use 2 spaces for indentation
         compact: false,
         // Don't compact the output
-        minimal: false,
+        minimal: false
         // Don't use the shortest possible escape sequences
-        __nonAsciiOnly: true,
-        // Only escape non-ASCII characters
-        // Preserve \t and \n characters
-        wrapAttributes: true
       });
       const wrapped = `export default ${escapedContent};`;
       ids.add(id);

@@ -6,8 +6,6 @@ import path from "path-browserify";
 import importExtendscript from "./lib/main";
 import dts from 'vite-plugin-dts';
 
-
-
 let libName = 'rollup-plugin-import-extendscript';
 export default defineConfig(({ command }) => {
     return {

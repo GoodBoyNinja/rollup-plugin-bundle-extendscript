@@ -67,7 +67,6 @@ export default function importJSXAsString(options = defaultOptions) {
             // we need to transform the content to include any other files that are imported inside the jsx file. However, if it's a jsxbin file we can't do that so we just return the content as is.
 
             content = resolveJSXContent(id, content);
-
             const escapedContent = jsesc(content, {
                 wrap: true,
                 quotes: "backtick",
@@ -75,9 +74,7 @@ export default function importJSXAsString(options = defaultOptions) {
                 indentLevel: 2, // Use 2 spaces for indentation
                 compact: false, // Don't compact the output
                 minimal: false, // Don't use the shortest possible escape sequences
-                __nonAsciiOnly: true, // Only escape non-ASCII characters
-                // Preserve \t and \n characters
-                wrapAttributes: true,
+
             });
 
             const wrapped = `export default ${escapedContent};`;
