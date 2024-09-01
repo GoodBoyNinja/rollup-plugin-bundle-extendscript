@@ -1,6 +1,5 @@
-import { resolve, dirname, join, basename } from "path";
+import { resolve, dirname, basename } from "path";
 import { readFileSync, existsSync } from "fs";
-const os = {};
 const fileresolve = (filePath, content = "") => {
   if (content === null) {
     content = readFileSync(filePath, "utf8");
@@ -306,8 +305,6 @@ let defaultOptions = {
   explicit: false
 };
 let ids = /* @__PURE__ */ new Set();
-let tempDir = os.tmpdir();
-join(tempDir, "extendscript-vite-plugin");
 function importJSXAsString(options = defaultOptions) {
   options = Object.assign({}, defaultOptions, options);
   return {

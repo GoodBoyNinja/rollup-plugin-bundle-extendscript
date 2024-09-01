@@ -22,7 +22,7 @@ export default defineConfig(({ command }) => {
             minify: false,
             rollupOptions: {
 
-                external: ['fs', 'path', 'fs-extra', 'crypto'],
+                external: ['fs', 'path', 'fs-extra', 'crypto', 'os'],
                 plugins: [
                     nodePolyfills(),
                 ]

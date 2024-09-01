@@ -2,7 +2,6 @@
   typeof exports === "object" && typeof module !== "undefined" ? module.exports = factory(require("path"), require("fs")) : typeof define === "function" && define.amd ? define(["path", "fs"], factory) : (global = typeof globalThis !== "undefined" ? globalThis : global || self, global["rollup-plugin-import-extendscript"] = factory(global.path, global.fs));
 })(this, function(path, fs) {
   "use strict";
-  const os = {};
   const fileresolve = (filePath, content = "") => {
     if (content === null) {
       content = fs.readFileSync(filePath, "utf8");
@@ -308,8 +307,6 @@
     explicit: false
   };
   let ids = /* @__PURE__ */ new Set();
-  let tempDir = os.tmpdir();
-  path.join(tempDir, "extendscript-vite-plugin");
   function importJSXAsString(options = defaultOptions) {
     options = Object.assign({}, defaultOptions, options);
     return {

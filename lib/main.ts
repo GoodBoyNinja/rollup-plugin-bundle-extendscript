@@ -1,6 +1,6 @@
 import { basename, join } from "path";
 import { existsSync, mkdirSync, readFileSync } from "fs";
-import os from "os";
+
 import resolveJSXContent from "./resolveJSXContent.js";
 import jsesc from "jsesc";
 import child_process from "child_process";
@@ -11,8 +11,7 @@ let defaultOptions = {
 };
 
 let ids = new Set<string>();
-let tempDir = os.tmpdir();
-let tempFolder = join(tempDir, "extendscript-vite-plugin");
+
 
 export default function importJSXAsString(options = defaultOptions) {
     options = Object.assign({}, defaultOptions, options);
