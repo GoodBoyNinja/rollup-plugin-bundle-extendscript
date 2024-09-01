@@ -15,26 +15,33 @@ export default function importJSXAsString(options = defaultOptions) {
         name: 'rollup-plugin-import-extendscript',
         load(id: string) {
 
-            console.log(id)
-
             let name = basename(id);
-            let isJSX = name.includes('.jsx');
-            let isJSXBIN = name.includes('.jsxbin');
-            let isExtendScript = name.includes('?extendscript');
-            let isKnownFormat = isJSX || isJSXBIN || isExtendScript;
-
-
-            if (options.explicit && !isKnownFormat) return "export default '';";
-            // else if (!isJSX && !isJSXBIN) return "";
-
-            id = isExtendScript ? id.replace('?extendscript', '') : id;
-
+            let isDestined = name.includes('?extendscript');
+            id = isDestined ? id.replace('?extendscript', '') : id;
             let content = readFileSync(id, 'utf8');
 
-            // we need to transform the content to include any other files that are imported inside the jsx file. However, if it's a jsxbin file we can't do that so we just return the content as is.
-            if (!isJSXBIN) {
-                content = resolveJSXContent(id, content);
+            if (!isDestined) {
+                return content
+            };
+
+
+
+            let isJSX = name.includes('.jsx');
+            let isJSXBIN = name.includes('.jsxbin');
+            let isKnownFormat = isJSX || isJSXBIN;
+
+            if (options.explicit && !isKnownFormat) {
+                throw new Error(`The file ${name} is not a known format. Please use a .jsx or .jsxbin file, or set the explicit option to false in vite.config.js`);
             }
+
+            if (isJSXBIN) {
+                throw new Error(`The file ${name} is a jsxbin file. This plugin can't process jsxbin files.`);
+            }
+
+            // we need to transform the content to include any other files that are imported inside the jsx file. However, if it's a jsxbin file we can't do that so we just return the content as is.
+
+            content = resolveJSXContent(id, content);
+
             const escapedContent = jsesc(content, {
                 wrap: true,
                 quotes: 'backtick',
@@ -42,10 +49,11 @@ export default function importJSXAsString(options = defaultOptions) {
                 indentLevel: 2, // Use 2 spaces for indentation
                 compact: false, // Don't compact the output
                 minimal: false, // Don't use the shortest possible escape sequences
-                // __nonAsciiOnly: true, // Only escape non-ASCII characters
+                __nonAsciiOnly: true, // Only escape non-ASCII characters
                 // Preserve \t and \n characters
-                // wrapAttributes: true,
+                wrapAttributes: true,
             });
+
             const wrapped = `export default ${escapedContent};`;
             ids.add(id);
             return wrapped;

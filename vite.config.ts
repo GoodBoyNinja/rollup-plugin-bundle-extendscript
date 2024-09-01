@@ -16,17 +16,21 @@ export default defineConfig(({ command }) => {
                 // Could also be a dictionary or array of multiple entry points
                 entry: resolve(__dirname, 'lib/main.ts'),
                 name: `${libName}`,
-                formats: ['es'],
                 // the proper extensions will be added
                 fileName: (format) => `${libName}.${format}.js`,
             },
             minify: false,
             rollupOptions: {
+
                 external: ['fs', 'path', 'fs-extra', 'crypto'],
+                plugins: [
+                    nodePolyfills(),
+                ]
             },
 
         },
         plugins: [
+
             dts({ rollupTypes: true }),
             command === 'serve' && importExtendscript({ explicit: true }),
 

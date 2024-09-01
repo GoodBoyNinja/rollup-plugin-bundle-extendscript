@@ -1,7 +1,7 @@
 {
   "name": "rollup-plugin-import-extendscript",
   "author": "Good Boy Ninja",
-  "version": "1.0.8",
+  "version": "1.1.1",
   "type": "module",
   "types": "./dist/rollup-plugin-import-extendscript.es.d.ts",
   "description": "import .jsx extendscript files as a string for later evaluation using evalScript()",
